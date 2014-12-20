@@ -14,4 +14,94 @@ class Meal extends BaseModel
     {
         return $this->hasMany('MealPoint');
     }
+
+    public function getTodayMealPoints()
+    {
+        $time = current_time();
+        return $this->mealPoints()->where('date', $time->toDateString())->first();
+    }
+
+    public function getLastMealPoints()
+    {
+        return $this->mealPoints()->orderBy('date', 'desc')->first();
+    }
+
+    public function randomMealLogs()
+    {
+        return $this->hasMany('RandomMealLog');
+    }
+
+    public function getTodayPoint()
+    {
+        $todayMealPoint = $this->getTodayMealPoints();
+        if ($todayMealPoint) {
+            return $todayMealPoint->point;
+        } else {
+            $mealPoint = $this->attachNewMealPoint();
+            return $mealPoint->point;
+        }
+    }
+
+    public function attachNewMealPoint($point = null, $date = null)
+    {
+        if ($point === null) {
+            $last = $this->getLastMealPoints();
+            if ($last) {
+                $point = $last->point;
+            } else {
+                $point = $this->start_point;
+            }
+        }
+
+        $date = current_date($date);
+
+        $mealPoint = MealPoint::create([
+            'point' => $point,
+            'date' => $date,
+            'meal_id' => $this->id,
+        ]);
+        return $mealPoint;
+    }
+
+    public function createRandomLog($tryCount = 1, $priority = 1, $date = null)
+    {
+        $date = current_date($date);
+
+        $randomMealLog = RandomMealLog::create([
+            'date' => $date,
+            'meal_id' => $this->id,
+            'priority' => $priority,
+            'try_count' => $tryCount,
+        ]);
+
+        return $randomMealLog;
+    }
+
+    public function createOrUpdateLog($date = null)
+    {
+        $date = current_date($date);
+
+        $mealLog = MealLog::where('date', $date)->first();
+        $mealPoint = $this->getTodayMealPoints();
+        if (!$mealLog) {
+            $mealLog = MealLog::create([
+                'date' => $date,
+                'meal_id' => $this->id,
+            ]);
+            MealPoint::updatePoint($date, $this->id);
+        } elseif ($mealLog->meal_id != $this->id) {
+            $oldMealPoint = $mealLog->meal->getTodayMealPoints();
+            $oldMealPoint->increment('point', $mealLog->meal->step_point);
+            $mealLog->update(['meal_id' => $this->id]);
+            $mealPoint->decrement('point', $this->step_point);
+        }
+
+        return $mealLog;
+    }
+
+    public function hasBeenChosenThisWeek()
+    {
+        return $this->mealLogs()->thisWeek()->count();
+    }
+
 }

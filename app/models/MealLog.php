@@ -9,4 +9,18 @@ class MealLog extends BaseModel
     {
         return $this->belongsTo('Meal');
     }
+
+    public function scopeToday($query)
+    {
+        return $query->where('date', current_date());
+    }
+
+    public function scopeThisWeek($query)
+    {
+        $time = current_time();
+        $weekStart = $time->startOfWeek()->toDateString();
+        $weekEnd = $time->endOfWeek()->toDateString();
+        return $query->where('date', '>=', $weekStart)
+            ->where('date', '<=', $weekEnd);
+    }
 }

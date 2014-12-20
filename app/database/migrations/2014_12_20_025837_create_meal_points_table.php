@@ -15,9 +15,10 @@ class CreateMealPointsTable extends Migration
     {
         Schema::create('meal_points', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('meal_id');
-            $table->integer('point');
-            $table->string('date');
+            $table->integer('meal_id')->unsigned();
+            $table->integer('point')->unsigned();
+            $table->date('date');
+            $table->index('date');
             $table->timestamps();
         });
     }

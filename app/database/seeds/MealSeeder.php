@@ -20,8 +20,9 @@ class MealSeeder extends Seeder
                     Meal::create([
                         'name' => $data[0],
                         'start_point' => (isset($data[1]) && !empty($data[1])) ? $data[1] : 0,
-                        'description' => (isset($data[2]) && !empty($data[2])) ? $data[2] : null,
-                        'image' => (isset($data[3]) && !empty($data[3])) ? $data[3] : null,
+                        'step_point' => (isset($data[2]) && !empty($data[2])) ? $data[2] : 0,
+                        'description' => (isset($data[3]) && !empty($data[3])) ? $data[3] : null,
+                        'image' => (isset($data[4]) && !empty($data[4])) ? $data[4] : null,
                     ]);
                 }
             }

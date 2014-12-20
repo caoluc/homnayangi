@@ -8,7 +8,8 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "laravel/framework": "4.2.*"
+        "laravel/framework": "4.2.*",
+        "davidgorges/php-biased-random": "dev-master"
     },
     "autoload": {
         "classmap": [
@@ -37,6 +38,5 @@
     },
     "config": {
         "preferred-install": "dist"
-    },
-    "minimum-stability": "stable"
+    }
 }

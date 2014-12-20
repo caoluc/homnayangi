@@ -37,13 +37,44 @@ class RandomMeal extends Command
      */
     public function fire()
     {
-        $mealArray = ['Bánh tráng', 'bún đậu', 'bún cá', 'lotte', 'bánh đa trộn'];
-        $random = '[info]Hôm nay chúng ta sẽ ăn: ' . $mealArray[array_rand($mealArray)]
-            . '. Xem thêm thông tin tại http://homnayangi.thangtd.com[/info]';
-        $roomId = Config::get('chatwork.room');
-        $apiToken = isset($_ENV['chatwork_api_token']) ? $_ENV['chatwork_api_token'] : '';
-        $chatwork = new Chatwork($apiToken, $roomId, $random);
-        $response = $chatwork->sendMessage();
-        $this->info($response);
+        $randoms = MealService::randomMeal();
+        $text = '';
+        foreach ($randoms as $key => $random) {
+            $text .= ($key + 1) . ':  ' . $random . '\n  ';
+        }
+
+        $message = '[info]Hôm nay chúng ta sẽ ăn: ' . $text . 'Xem thêm thông tin tại http://homnayangi.thangtd.com[/info]';
+        $sendMessage = $this->option('send-message');
+        if ($sendMessage) {
+            $roomId = Config::get('chatwork.room');
+            $apiToken = isset($_ENV['chatwork_api_token']) ? $_ENV['chatwork_api_token'] : '';
+            $chatwork = new Chatwork($apiToken, $roomId, $message);
+            $response = $chatwork->sendMessage();
+            $this->info($response);
+        }
+
+        $this->info($message);
+    }
+
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [];
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['send-message', null, InputOption::VALUE_NONE, 'Do not send Chatwork Message'],
+        ];
     }
 }
