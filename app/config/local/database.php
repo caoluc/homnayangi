@@ -23,9 +23,9 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'host' => 'localhost',
-            'database' => 'homestead',
-            'username' => 'homestead',
-            'password' => 'secret',
+            'database' => 'homnayangi',
+            'username' => 'hnag',
+            'password' => 'hnag',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',

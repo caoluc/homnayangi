@@ -52,9 +52,9 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'host' => 'localhost',
-            'database' => 'forge',
-            'username' => 'forge',
-            'password' => '',
+            'database' => 'homnayangi',
+            'username' => 'hnag',
+            'password' => 'hnag',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
