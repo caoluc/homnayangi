@@ -4,6 +4,15 @@ class BaseController extends Controller
 {
 
     /**
+     * @var array $viewData
+     */
+    protected $viewData;
+    /**
+     * @var User
+     */
+    protected $currentUser;
+
+    /**
      * Setup the layout used by the controller.
      *
      * @return void
@@ -15,4 +24,11 @@ class BaseController extends Controller
         }
     }
 
+    public function __construct()
+    {
+        $this->currentUser = Auth::user();
+        $this->viewData = [
+            'currentUser' => $this->currentUser,
+        ];
+    }
 }

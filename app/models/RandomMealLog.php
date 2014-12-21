@@ -20,7 +20,16 @@ class RandomMealLog extends BaseModel
     {
         $date = current_date($date);
 
-        $current = self::where('date', $date)->orderBy('try_count', 'desc')->select('try_count')->first();
-        return $current ? $current->try_count + 1 : 1;
+        $current = self::where('date', $date)->max('try_count');
+        return $current ? $current + 1 : 1;
+    }
+
+    public static function getLastRandomLogs()
+    {
+        $date = current_date();
+        $currentTryCount = self::getNextTryCount() - 1;
+        $lastLogs = RandomMealLog::where('date', $date)->where('try_count', $currentTryCount)->get();
+
+        return $lastLogs;
     }
 }

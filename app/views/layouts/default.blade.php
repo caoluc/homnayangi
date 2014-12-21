@@ -5,14 +5,15 @@
     @include('layouts.includes.head')
 </head>
 <body>
-    <div id="body" class="main {{ isset($fullSize) ? 'container-fluid' : 'container' }}">
-        <div class="row">
-            @yield('main')
+    <div id="wrapper container-fluid }}">
+        <div id="body" class="main">
+            <div class="row">
+                @yield('main')
+            </div>
         </div>
+        @include('layouts.includes.footer')
     </div>
 </body>
-
-@include('layouts.includes.footer')
 <div id="back-to-top" class="back-to-top hide">
     <div class="inner">
         <a href="#" title="Back to Top">

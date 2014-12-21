@@ -5,6 +5,8 @@ class Meal extends BaseModel
     protected $table = 'meals';
     protected $guarded = ['id'];
 
+    private $chosenThisWeek = null;
+
     public function mealLogs()
     {
         return $this->hasMany('MealLog');
@@ -101,7 +103,25 @@ class Meal extends BaseModel
 
     public function hasBeenChosenThisWeek()
     {
-        return $this->mealLogs()->thisWeek()->count();
+        if ($this->chosenThisWeek === null) {
+            $this->chosenThisWeek = $this->mealLogs()->thisWeek()->count();
+        }
+        return $this->chosenThisWeek;
     }
 
+    public function getCurrentPoint()
+    {
+        $mealPoint = $this->getLastMealPoints();
+        return $mealPoint ? $mealPoint->point : $this->meal->point;
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        // After created
+        static::created(function ($meal) {
+            $meal->attachNewMealPoint();
+        });
+    }
 }

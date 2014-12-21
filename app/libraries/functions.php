@@ -10,7 +10,7 @@ function current_time()
     $dt = Carbon::now();
     return $dt;
     // return $dt->subDays(1);
-    // return $dt->addDays(2);
+    // return $dt->addDays(3);
 }
 
 /**
@@ -26,5 +26,15 @@ function current_date($date = null)
         $date = $date->toDateString();
     }
     return $date;
+}
+
+/**
+ * @param $string
+ * @return string
+ */
+function to_date_string($string)
+{
+    $dt = Carbon::createFromFormat('Y-m-d', $string);
+    return $dt->format('D, d M Y');
 }
 
