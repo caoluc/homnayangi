@@ -38,3 +38,17 @@ function to_date_string($string)
     return $dt->format('D, d M Y');
 }
 
+/**
+ * @param $obj
+ * @return array
+ */
+function obj_to_array($obj)
+{
+    $array = [];
+    foreach ($obj as $key => $value) {
+        $array[$key] = $value;
+    }
+
+    return $array;
+}
+

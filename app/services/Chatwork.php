@@ -3,17 +3,37 @@ class Chatwork
 {
     public $message;
     public $roomId;
-    public $uri;
     public $apiToken;
 
-    public function __construct($apiToken, $roomId, $message)
+    const MESSAGE_END_POINT = "https://api.chatwork.com/v1/rooms/%s/messages";
+    const MEMBER_END_POINT = "https://api.chatwork.com/v1/rooms/%s/members";
+
+    public function __construct($apiToken, $roomId, $message = '')
     {
         $this->apiToken = $apiToken;
         $this->roomId = $roomId;
         $this->message = $message;
-        $this->uri = "https://api.chatwork.com/v1/rooms/{$roomId}/messages";
     }
 
+    public function send($url, $type = null, $params = null)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['X-ChatWorkToken: ' . $this->apiToken]);
+
+        if ($type) {
+            curl_setopt($ch, $type, 1);
+        }
+
+        if ($params) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params, '', '&'));
+        }
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
     /**
      * Send message to chatwork group
      * @internal param Access $api_token token
@@ -21,29 +41,22 @@ class Chatwork
      * @internal param Message $message
      * @return mixed
      */
-    function sendMessage()
+    public function sendMessage()
     {
         $params = [
             'body' => $this->message,
         ];
-        // Init cURL session
-        $ch = curl_init();
-        // Set Options on the cURL session
-        // Set the URL to fetch
-        curl_setopt($ch, CURLOPT_URL, sprintf($this->uri, $this->roomId));
-        // Set HTTP header
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['X-ChatWorkToken: ' . $this->apiToken]);
-        // Set method to POST
-        curl_setopt($ch, CURLOPT_POST, 1);
-        // Set data to post
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params, '', '&'));
-        // Set return the transfer as a string  of the return value of curl_exec()
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // Perform cURL session
-        $response = curl_exec($ch);
-        // Close cURL session
-        curl_close($ch);
 
-        return $response;
+        $url = sprintf(self::MESSAGE_END_POINT, $this->roomId);
+        return $this->send($url, CURLOPT_POST, $params);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMembers()
+    {
+        $url = sprintf(self::MEMBER_END_POINT, $this->roomId);
+        return $this->send($url);
     }
 }
