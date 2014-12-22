@@ -5,6 +5,7 @@ class HomeController extends BaseController
 
     public function index()
     {
+        $date = current_date();
         $this->viewData['randomLogs'] = RandomMealLog::getLastRandomLogs();
         $meals = Meal::all();
         $meals->load('mealLogs', 'mealPoints');
@@ -27,6 +28,10 @@ class HomeController extends BaseController
             $mealCountData[] = [$meal->name, $meal->count];
         }
 
+        $votes = Vote::where('date', $date)->get();
+        $votes->load('user', 'meal');
+
+        $this->viewData['votes'] = $votes;
         $this->viewData['mealPointsData'] = $mealPointsData;
         $this->viewData['mealCountData'] = $mealCountData;
         return View::make('hello', $this->viewData);

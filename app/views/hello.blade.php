@@ -10,13 +10,26 @@
     <h1 class="text-large text-primary">Hôm nay ăn gì ?</h1>
     <div class="row">
         <div class="col-md-3 col-md-offset-1 today-random">
+            <h2 class="text-danger">Random</h2>
             @if (count($randomLogs))
                 @foreach ($randomLogs as $index => $randomLog)
-                    <h2 class="text-success">{{ $index + 1 }}. {{ $randomLog->meal->name }}</h2>
+                    <h4 class="text-success">{{ $index + 1 }}. {{ $randomLog->meal->name }}</h4>
                 @endforeach
             @else
-                <h2 class="text-danger">Hiện chưa có kết quả Random. Come back later ^ ^</h2>
+                <h4 class="text-danger">Hiện chưa có kết quả Random. Come back later ^ ^</h4>
             @endif
+            <hr>
+            <div class="votes">
+                <h2 class="text-danger">Ai đã vote gì ?</h2>
+                @foreach($votes as $vote)
+                    <div class="row vote-row">
+                        <img src="{{ $vote->user->avatar_image_url }}" alt="{{ $vote->user->name }}" class="img-responsive img-circle pull-left avatar">
+                        <div class="vote-info pull-left">
+                            <span class="text-success">{{ $vote->user->name }}</span>: <span class="text-info">{{ $vote->meal->name }}</span><br/>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
         <div class="col-md-8" id="point-chart"></div>
     </div>
