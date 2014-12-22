@@ -4,7 +4,7 @@ class VoteService
 {
     public static function getVote($string)
     {
-        $pos = strrpos($string, '@vote ');
+        $pos = strrpos($string, '#vote ');
         if ($pos === false) {
             return false;
         }
