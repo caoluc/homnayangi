@@ -6,10 +6,17 @@ class Meal extends BaseModel
     protected $guarded = ['id'];
 
     private $chosenThisWeek = null;
+    private $currentMealPoint = null;
+    private $votePoints = null;
 
     public function mealLogs()
     {
         return $this->hasMany('MealLog');
+    }
+
+    public function votes()
+    {
+        return $this->hasMany('Vote');
     }
 
     public function mealPoints()
@@ -108,13 +115,36 @@ class Meal extends BaseModel
         if ($this->chosenThisWeek === null) {
             $this->chosenThisWeek = $this->mealLogs()->thisWeek()->count();
         }
+
         return $this->chosenThisWeek;
     }
 
-    public function getCurrentPoint()
+    public function getVotePoint($chosen = false)
     {
-        $mealPoint = $this->getLastMealPoints();
-        return $mealPoint ? $mealPoint->point : $this->meal->point;
+        if (!$chosen) {
+            if ($this->votePoints === null) {
+                $votePoint = Config::get('chatwork.vote_point');
+                $count = $this->votes()->today()->count();
+                $this->votePoints = $count * $votePoint;
+            }
+
+            return $this->votePoints;
+        }
+
+        return 0;
+    }
+
+    public function getCurrentPoint($notCountVotes = false)
+    {
+        if ($this->currentMealPoint === null) {
+            $this->currentMealPoint = $this->getTodayPoint();
+            if (!$notCountVotes) {
+                $votePoints = $this->getVotePoint();
+                $this->currentMealPoint = $this->currentMealPoint + $votePoints;
+            }
+        }
+
+        return $this->currentMealPoint;
     }
 
     public static function boot()

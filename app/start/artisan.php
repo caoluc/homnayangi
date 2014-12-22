@@ -16,3 +16,4 @@ Artisan::add(new ChooseMeal);
 Artisan::add(new UpdateUsers);
 Artisan::add(new GetVote);
 Artisan::add(new CreateMealPoint);
+Artisan::add(new SendStartVoteMessage);

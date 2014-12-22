@@ -7,6 +7,7 @@ class HomeController extends BaseController
     {
         App::setLocale('vn');
         $date = current_date();
+        $chosen = MealService::hasBeenChosenToday();
         $this->viewData['randomLogs'] = RandomMealLog::getLastRandomLogs();
         $meals = Meal::all();
         $meals->load('mealLogs', 'mealPoints');
@@ -14,14 +15,14 @@ class HomeController extends BaseController
         $this->viewData['mealLogs'] = MealLog::orderBy('date', 'desc')->take(10)->get();
 
         $maxDate = MealPoint::max('date');
-        $mealPoints = MealPoint::where('date', $maxDate)->orderBy('point', 'desc')->get();
+        $mealPoints = MealPoint::where('date', $maxDate)->get();
 
         $mealPointsData = [];
         foreach ($mealPoints as $mealPoint) {
             if ($mealPoint->meal->hasBeenChosenThisWeek()) {
                 continue;
             }
-            $mealPointsData[] = [$mealPoint->meal->name, $mealPoint->point];
+            $mealPointsData[] = [$mealPoint->meal->name, $mealPoint->meal->getCurrentPoint($chosen)];
         }
 
         $mealCountData = [];
@@ -35,6 +36,7 @@ class HomeController extends BaseController
         $this->viewData['votes'] = $votes;
         $this->viewData['mealPointsData'] = $mealPointsData;
         $this->viewData['mealCountData'] = $mealCountData;
+        $this->viewData['chosen'] = $chosen;
         return View::make('hello', $this->viewData);
     }
 

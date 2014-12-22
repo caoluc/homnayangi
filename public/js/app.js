@@ -6,6 +6,9 @@ $(function() {
             parseInt(value[1])
         ]);
     });
+    pointData.sort(function (a, b) {
+       return b[1] - a[1];
+    });
     $('#point-chart').highcharts({
         chart: {
             backgroundColor: null,

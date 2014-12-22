@@ -14,7 +14,7 @@ class MealService
             if ($meal->hasBeenChosenThisWeek()) {
                 continue;
             }
-            $element = new Element($meal->name, $meal->getTodayPoint());
+            $element = new Element($meal->name, $meal->getCurrentPoint());
             $randomizer->add($element);
         }
         $results = [];
@@ -63,5 +63,24 @@ class MealService
                 $meal->attachNewMealPoint();
             }
         }
+    }
+
+    public static function hasBeenChosenToday()
+    {
+        $count = MealLog::where('date', current_date())->count();
+        return $count != 0;
+    }
+
+    public static function getAvailableMeals()
+    {
+        $meals = Meal::all();
+        $results = [];
+        foreach ($meals as $meal) {
+            if (!$meal->hasBeenChosenThisWeek()) {
+                $results[] = $meal;
+            }
+        }
+
+        return $results;
     }
 }

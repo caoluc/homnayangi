@@ -9,8 +9,8 @@
 <div class="page jumbotron text-center">
     <h1 class="text-large text-primary">Hôm nay ăn gì ?</h1>
     <div class="row">
-        <div class="col-md-3 col-md-offset-1 today-random">
-            <h2 class="text-danger">Random</h2>
+        <div class="col-md-4 col-md-offset-1 today-random">
+            <h2 class="text-danger">Hôm nay ăn gì ?</h2>
             @if (count($randomLogs))
                 @foreach ($randomLogs as $index => $randomLog)
                     <h4 class="text-success">{{ $index + 1 }}. {{ $randomLog->meal->name }}</h4>
@@ -24,14 +24,14 @@
                 @foreach($votes as $vote)
                     <div class="row vote-row">
                         <img src="{{ $vote->user->avatar_image_url }}" alt="{{ $vote->user->name }}" class="img-responsive img-circle pull-left avatar">
-                        <div class="vote-info pull-left">
+                        <div class="col-lg-8 vote-info pull-left text-left">
                             <span class="text-success">{{ $vote->user->name }}</span>: <span class="text-info">{{ $vote->meal->name }}</span><br/>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
-        <div class="col-md-8" id="point-chart"></div>
+        <div class="col-md-7" id="point-chart"></div>
     </div>
 </div>
 
@@ -66,6 +66,7 @@
                         <th class="text-center">Tên món ăn</th>
                         <th class="text-center">Điểm khởi đầu</th>
                         <th class="text-center">Điểm gia tăng</th>
+                        <th class="text-center">Điểm vote trong ngày</th>
                         <th class="text-center">Điểm hiện tại</th>
                         <th class="text-center">Đã ăn trong tuần này hay chưa ?</th>
                     </tr>
@@ -77,7 +78,8 @@
                             <td> {{ $meal->name }} </td>
                             <td> {{ $meal->start_point }} </td>
                             <td> {{ $meal->step_point }} </td>
-                            <td> {{ $meal->getCurrentPoint() }}</td>
+                            <td> {{ $meal->getVotePoint($chosen) }} </td>
+                            <td> {{ $meal->getCurrentPoint($chosen) }}</td>
                             <td> {{ $meal->hasBeenChosenThisWeek() ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>' }}</td>
                         </tr>
                     @endforeach

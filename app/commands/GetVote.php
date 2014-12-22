@@ -3,6 +3,7 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Carbon\Carbon;
 
 class GetVote extends Command
 {
@@ -47,6 +48,14 @@ class GetVote extends Command
         }
         foreach ($messages as $message) {
             $data = obj_to_array($message);
+            $dt = Carbon::createFromTimestamp($data['send_time']);
+            $startTime = Config::get('chatwork.vote_start_time');
+            $endTime = Config::get('chatwork.vote_end_time');
+            $time = $dt->format('H:i:s');
+            if (!($startTime <= $time && $time <= $endTime)) {
+                continue;
+            }
+
             $meal = VoteService::getVote($data['body']);
             if ($meal) {
                 $user = User::where('account_id', $data['account']['account_id'])->first();
