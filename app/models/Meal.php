@@ -93,10 +93,12 @@ class Meal extends BaseModel
             MealPoint::updatePoint($date, $this->id);
         } elseif ($mealLog->meal_id != $this->id) {
             $oldMealPoint = $mealLog->meal->getTodayMealPoints();
+            $mealLog->meal->decrement('count');
             $oldMealPoint->increment('point', $mealLog->meal->step_point);
             $mealLog->update(['meal_id' => $this->id]);
             $mealPoint->decrement('point', $this->step_point);
         }
+        $this->increment('count');
 
         return $mealLog;
     }

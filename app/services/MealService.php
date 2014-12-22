@@ -54,4 +54,14 @@ class MealService
 
         $meal->createLog();
     }
+
+    public static function createMealPoints()
+    {
+        $meals = Meal::all();
+        foreach ($meals as $meal) {
+            if (!$meal->getTodayMealPoints()) {
+                $meal->attachNewMealPoint();
+            }
+        }
+    }
 }
