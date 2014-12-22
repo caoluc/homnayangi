@@ -5,6 +5,7 @@ class HomeController extends BaseController
 
     public function index()
     {
+        App::setLocale('vn');
         $date = current_date();
         $this->viewData['randomLogs'] = RandomMealLog::getLastRandomLogs();
         $meals = Meal::all();

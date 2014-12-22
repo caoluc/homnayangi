@@ -35,7 +35,7 @@ function current_date($date = null)
 function to_date_string($string)
 {
     $dt = Carbon::createFromFormat('Y-m-d', $string);
-    return $dt->format('D, d M Y');
+    return $dt->format('l');
 }
 
 /**

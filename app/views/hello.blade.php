@@ -43,7 +43,7 @@
         <div class="col-md-3 col-md-offset-1">
             @if (count($mealLogs))
                 @foreach ($mealLogs as $index => $mealLog)
-                    <h4 class="text-success"><span class='text-info'>{{ to_date_string($mealLog->date) }}</span>.
+                    <h4 class="text-info"><span class='text-success'>{{ trans('day.'.to_date_string($mealLog->date)) }}, {{ ($mealLog->date) }}</span>.
                     {{ $mealLog->meal->name }}</h4>
                 @endforeach
             @else
