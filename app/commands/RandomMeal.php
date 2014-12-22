@@ -38,12 +38,12 @@ class RandomMeal extends Command
     public function fire()
     {
         $randoms = MealService::randomMeal();
-        $text = '';
+        $text = "\n  ";
         foreach ($randoms as $key => $random) {
-            $text .= ($key + 1) . ':  ' . $random . '\n  ';
+            $text .= ($key + 1) . ':  ' . $random . " \n  ";
         }
 
-        $message = '[info]Hôm nay chúng ta sẽ ăn: ' . $text . 'Xem thêm thông tin tại http://homnayangi.thangtd.com[/info]';
+        $message = '[info][title]' . current_date() . '[/title]Hôm nay chúng ta sẽ ăn: ' . $text . 'Xem thêm thông tin tại http://homnayangi.thangtd.com[/info]';
         $sendMessage = $this->option('send-message');
         if ($sendMessage) {
             $roomId = Config::get('chatwork.room');
