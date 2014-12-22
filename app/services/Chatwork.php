@@ -15,6 +15,11 @@ class Chatwork
         $this->message = $message;
     }
 
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    }
+
     public function send($url, $type = null, $params = null)
     {
         $ch = curl_init();
@@ -49,6 +54,24 @@ class Chatwork
 
         $url = sprintf(self::MESSAGE_END_POINT, $this->roomId);
         return $this->send($url, CURLOPT_POST, $params);
+    }
+
+    public function sendReply($userId, $username, $messageId)
+    {
+        $message = "[rp aid={$userId} to={$this->roomId}-{$messageId}] $username\n";
+        $params = [
+            'body' => $message . $this->message,
+        ];
+
+        $url = sprintf(self::MESSAGE_END_POINT, $this->roomId);
+        return $this->send($url, CURLOPT_POST, $params);
+    }
+
+    public function getMessages()
+    {
+        $url = sprintf(self::MESSAGE_END_POINT, $this->roomId);
+        $url .= '?force=1';
+        return $this->send($url);
     }
 
     /**

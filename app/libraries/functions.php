@@ -46,6 +46,9 @@ function obj_to_array($obj)
 {
     $array = [];
     foreach ($obj as $key => $value) {
+        if ($value instanceof stdClass) {
+            $value = obj_to_array($value);
+        }
         $array[$key] = $value;
     }
 

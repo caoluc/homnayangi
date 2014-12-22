@@ -14,3 +14,4 @@
 Artisan::add(new RandomMeal);
 Artisan::add(new ChooseMeal);
 Artisan::add(new UpdateUsers);
+Artisan::add(new GetVote);
