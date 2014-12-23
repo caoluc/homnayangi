@@ -1,30 +1,22 @@
 <?php
 
-use BiasedRandom\Randomizer;
-use BiasedRandom\Element;
-
 class MealService
 {
     public static function randomMeal()
     {
         $tryCount = RandomMealLog::getNextTryCount();
-        $randomizer = new Randomizer();
+        $randomizer = new BiasRandom();
         $meals = Meal::all();
         foreach ($meals as $meal) {
             if ($meal->hasBeenChosenThisWeek()) {
                 continue;
             }
-            $element = new Element($meal->name, $meal->getCurrentPoint());
-            $randomizer->add($element);
+
+            $randomizer->addElement($meal->name, $meal->getCurrentPoint());
         }
-        $results = [];
+
         $max = Config::get('random.max');
-        while (count($results) < $max) {
-            $random = $randomizer->get();
-            if (!in_array($random, $results)) {
-                $results[] = $random;
-            }
-        }
+        $results = $randomizer->random($max);
 
         foreach ($results as $key => $result) {
             $found = false;
