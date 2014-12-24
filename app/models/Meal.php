@@ -8,6 +8,7 @@ class Meal extends BaseModel
     private $chosenThisWeek = null;
     private $currentMealPoint = null;
     private $votePoints = null;
+    private $lastMeal = false;
 
     public function mealLogs()
     {
@@ -56,7 +57,11 @@ class Meal extends BaseModel
         if ($point === null) {
             $last = $this->getLastMealPoints();
             if ($last) {
-                $point = $last->point;
+                if ($this->hasBeenChosenLastTime()) {
+                    $point = $this->start_point;
+                } else {
+                    $point = $last->point;
+                }
             } else {
                 $point = $this->start_point;
             }
@@ -117,6 +122,15 @@ class Meal extends BaseModel
         }
 
         return $this->chosenThisWeek;
+    }
+
+    public function hasBeenChosenLastTime()
+    {
+        if ($this->lastMeal === false) {
+            $this->lastMeal = MealLog::getLastChosenMeal();
+        }
+
+        return $this->id === $this->lastMeal;
     }
 
     public function getVotePoint($chosen = false)

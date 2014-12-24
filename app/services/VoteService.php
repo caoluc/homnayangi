@@ -18,7 +18,12 @@ class VoteService
         if (is_numeric($text)) {
             $meal = Meal::where('id', $text)->first();
         } else {
-            $meal = Meal::where('name', $text)->first();
+            if ($text === 'random' || $text === 'Random') {
+                $meals = MealService::getAvailableMeals();
+                $meal = $meals[array_rand($meals)];
+            } else {
+                $meal = Meal::where('name', $text)->first();
+            }
         }
         if ($meal) {
             return $meal;

@@ -5,6 +5,7 @@ class MealLog extends BaseModel
     protected $table = 'meal_logs';
     protected $guarded = ['id'];
 
+
     public function meal()
     {
         return $this->belongsTo('Meal');
@@ -22,5 +23,14 @@ class MealLog extends BaseModel
         $weekEnd = $time->endOfWeek()->toDateString();
         return $query->where('date', '>=', $weekStart)
             ->where('date', '<=', $weekEnd);
+    }
+
+    public static function getLastChosenMeal()
+    {
+        $mealLog = MealLog::orderBy('date', 'desc')->first();
+        if ($mealLog) {
+            return $mealLog->meal_id;
+        }
+        return null;
     }
 }
