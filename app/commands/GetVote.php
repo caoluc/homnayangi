@@ -59,11 +59,19 @@ class GetVote extends Command
             $meal = VoteService::getVote($data['body']);
             if ($meal) {
                 $user = User::where('account_id', $data['account']['account_id'])->first();
-                $vote = VoteService::createOrUpdateVote($user, $meal, $data);
-                if ($vote) {
-                    $message = "Bạn đã vote thành công cho món ăn: '{$meal->name}'.\nXem thêm thông tin chi tiết tại http://homnayangi.thangtd.com/";
+                if ($user->isBanned()) {
+                    $message = "Account của bạn đang bị Ban nên vote không có hiệu lực. :#)\nHãy Ngọt Lòng box để được Unban!\n";
+                    $this->info($message);
                     $chatwork->setMessage($message);
                     $chatwork->sendReply($data['account']['account_id'], $data['account']['name'], $data['message_id']);
+                } else {
+                    $vote = VoteService::createOrUpdateVote($user, $meal, $data);
+                    if ($vote) {
+                        $message = "Bạn đã vote thành công cho món ăn: '{$meal->name}'.\nXem thêm thông tin chi tiết tại http://homnayangi.thangtd.com/";
+                        $this->info($message);
+                        $chatwork->setMessage($message);
+                        $chatwork->sendReply($data['account']['account_id'], $data['account']['name'], $data['message_id']);
+                    }
                 }
             }
         }

@@ -10,6 +10,9 @@ class User extends BaseModel implements UserInterface, RemindableInterface
 
     use UserTrait, RemindableTrait;
 
+    const STATUS_BAN = 0;
+    const STATUS_NORMAL = 1;
+
     /**
      * The database table used by the model.
      *
@@ -22,5 +25,10 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     public function votes()
     {
         return $this->hasMany('Vote');
+    }
+
+    public function isBanned()
+    {
+        return $this->status == self::STATUS_BAN;
     }
 }
