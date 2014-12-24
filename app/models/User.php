@@ -31,4 +31,10 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     {
         return $this->status == self::STATUS_BAN;
     }
+
+    public function updateLastMessage($messageId)
+    {
+        $this->last_message = $messageId;
+        $this->save();
+    }
 }
