@@ -29,6 +29,7 @@ class BaseController extends Controller
         $this->currentUser = Auth::user();
         $this->viewData = [
             'currentUser' => $this->currentUser,
+            'title' => 'Hôm nay ăn gì',
         ];
     }
 }

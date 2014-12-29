@@ -5,6 +5,8 @@
 
 <title>@if (isset($title)) {{ $title }} @endif</title>
 
+<link rel="shortcut icon" href="/favicon.png" type="image/png"/>
+
 {{ HTML::style('css/bootstrap.min.css') }}
 {{ HTML::style('css/font-awesome.min.css') }}
 {{ HTML::style('css/animate.css') }}
