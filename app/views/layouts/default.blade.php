@@ -5,7 +5,7 @@
     @include('layouts.includes.head')
 </head>
 <body>
-    <div id="wrapper container-fluid }}">
+    <div id="wrapper" class="container-fluid">
         <div id="body" class="main">
             <div class="row">
                 @yield('main')
