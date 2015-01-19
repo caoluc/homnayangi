@@ -55,7 +55,7 @@ class SendStartVoteMessage extends Command
 
         $votePoint = Config::get('chatwork.vote_point');
         $message .= "Mỗi vote sẽ làm tăng số điểm của món ăn thêm $votePoint điểm. Kết quả random sẽ được công bố vào 11h hôm nay.\n" .
-                    "Xem thêm thông tin chi tiết tại http://homnayangi.thangtd.com";
+                    "Xem thêm thông tin chi tiết tại http://truanayangi.thangtd.com";
         $sendMessage = $this->option('send-message');
         if ($sendMessage) {
             $roomId = Config::get('chatwork.room');

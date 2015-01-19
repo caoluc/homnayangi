@@ -43,7 +43,7 @@ class RandomMeal extends Command
             $text .= ($key + 1) . ':  ' . $random . " \n  ";
         }
 
-        $message = '[info][title]' . current_date() . '[/title]Hôm nay chúng ta sẽ ăn: ' . $text . 'Xem thêm thông tin tại http://homnayangi.thangtd.com[/info]';
+        $message = '[info][title]' . current_date() . '[/title]Hôm nay chúng ta sẽ ăn: ' . $text . 'Xem thêm thông tin tại http://truanayangi.thangtd.com[/info]';
         $sendMessage = $this->option('send-message');
         if ($sendMessage) {
             $roomId = Config::get('chatwork.room');

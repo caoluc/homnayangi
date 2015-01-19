@@ -68,7 +68,7 @@ class GetVote extends Command
                     } else {
                         $vote = VoteService::createOrUpdateVote($user, $meal, $data);
                         if ($vote) {
-                            $message = "Bạn đã vote thành công cho món ăn: '{$meal->name}'.\nXem thêm thông tin chi tiết tại http://homnayangi.thangtd.com/";
+                            $message = "Bạn đã vote thành công cho món ăn: '{$meal->name}'.\nXem thêm thông tin chi tiết tại http://truanayangi.thangtd.com/";
                             $chatwork->setMessage($message);
                             $chatwork->sendReply($data['account']['account_id'], $data['account']['name'], $data['message_id']);
                         }

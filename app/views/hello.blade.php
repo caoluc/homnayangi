@@ -7,10 +7,15 @@
 @section('main')
 
 <div class="page jumbotron text-center">
-    <h1 class="text-large text-primary">Hôm nay ăn gì ?</h1>
+    <div class="col-lg-12">
+        <h1 class="text-large text-primary">
+            <img src="/img/icon.png" class="img-circle" alt="Responsive image">
+            <span class="">Trưa nay ăn gì ?</span>
+        </h1>
+    </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-1 today-random">
-            <h2 class="text-danger">Hôm nay ăn gì ?</h2>
+            <h2 class="text-danger">Trưa nay ăn gì ?</h2>
             @if (count($randomLogs))
                 @foreach ($randomLogs as $index => $randomLog)
                     <h4 class="text-success">{{ $index + 1 }}. {{ $randomLog->meal->name }}</h4>
